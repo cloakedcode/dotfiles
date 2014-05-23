@@ -1,4 +1,4 @@
-xrandr --output VGA-1 --left-of DVI-I-1
+xrandr --output VGA-0 --left-of DVI-I-1
 
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
 [[ -f ~/.xmodmap ]] && xmodmap ~/.xmodmap
