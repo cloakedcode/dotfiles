@@ -9,7 +9,8 @@ let g:email='a.smith@s2games.com'
 let g:syntastic_always_populate_loc_list = 1
 
 syntax on
-colorscheme solarized
+colorscheme slate
+set background=dark
 
 set autoindent
 set smartindent
@@ -20,8 +21,17 @@ set expandtab
 
 set number
 
+set wh=50
+set wiw=110
+
 let mapleader=','
 nmap <Leader>a> :Tab /=><CR>
 vmap <Leader>a> :Tab /=><CR>
 nmap <Leader>a= :Tab /=<CR>
 vmap <Leader>a= :Tab /=<CR>
+
+autocmd BufNewFile,BufRead Gemfile set filetype=ruby
+autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
+autocmd BufNewFile,BufRead Berksfile set filetype=ruby
+
+autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
