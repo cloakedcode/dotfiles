@@ -28,3 +28,6 @@
 [submodule ".config/awesome/tyrannical"]
 	path = .config/awesome/tyrannical
 	url = https://github.com/Elv13/tyrannical.git
+[submodule ".config/awesome/awesome-freedesktop"]
+	path = .config/awesome/awesome-freedesktop
+	url = https://github.com/terceiro/awesome-freedesktop.git
