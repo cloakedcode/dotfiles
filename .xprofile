@@ -1,0 +1,3 @@
+/usr/bin/xautolock -time 2 -locker slock -corners +000 -cornerdelay 3 &
+
+/usr/local/bin/xflux -z 46526

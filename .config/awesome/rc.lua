@@ -43,7 +43,7 @@ end
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
+terminal = "xfce4-terminal"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -58,7 +58,7 @@ pianobar_upcoming = pianobar_cmd .. "upcoming"
 pianobar_station = pianobar_cmd .. "station"
 pianobar_playing = pianobar_cmd .. "playing"
 pianobar_quit = pianobar_cmd .. "quit && screen -S pianobar -X quit"
-pianobar_screen = "screen -Sdm pianobar && screen -S pianobar -X screen " .. pianobar_toggle
+pianobar_screen = "urxvt -name pianobar -e " .. pianobar_toggle
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -103,32 +103,20 @@ tyrannical.tags = {
         layout      = awful.layout.suit.fair, -- Use the tile layout
         instance    = {"dev", "ops"},         -- Accept the following instances. This takes precedence over 'class'
         class       = { --Accept the following classes, refuse everything else (because of "exclusive=true")
-            "xterm" , "urxvt" , "aterm","URxvt","XTerm","konsole","terminator","gnome-terminal"
+            "xterm" , "urxvt" , "aterm","URxvt","XTerm","konsole","terminator","gnome-terminal","xfce4-terminal"
         }
     } ,
     {
         name = "Develop",
-        init        = true,
+        init        = false,
         exclusive   = true,
         screen      = 1,
         clone_on    = 2, -- Create a single instance of this tag on screen 1, but also show it on screen 2
                          -- The tag can be used on both screen, but only one at once
         layout      = awful.layout.suit.floating,
-        exec_once   = {"p4v"},
+        exec_once   = {},
         class       = { 
-            "p4v.bin"
         }
-    } ,
-    {
-        name        = "Web",
-        init        = true,
-        exclusive   = true,
-      --icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
-        screen      = 2,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
-        layout      = awful.layout.suit.max,      -- Use the max layout
-        class = {
-            "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"        , "Arora",
-            "Chromium"      , "nightly"        , "minefield" , "Chrome"    }
     } ,
     {
         name        = "Doc",
@@ -152,15 +140,33 @@ tyrannical.tags = {
             "Pidgin"          , "Skype"                              }
     } ,
     {
+        name        = "Web",
+        init        = true,
+        exclusive   = true,
+      --icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
+        screen      = screen.count()>1 and 2 or 1,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
+        layout      = awful.layout.suit.max,      -- Use the max layout
+        exec_once   = {"firefox"},
+        class = {
+            "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"        , "Arora",
+            "Chromium"      , "nightly"        , "minefield" , "Chrome"    }
+    } ,
+    {
+        name        = "Scratch",
+        init        = true,
+        exclusive   = false,
+        screen      = 1,
+        layout      = awful.layout.suit.floating,
+     } ,
+    {
         name        = "Music",
         init        = true,
         exclusive   = true,
         screen      = 1,
         layout      = awful.layout.suit.max,
-        exec_once   = {"urxvt -name pianobar -e 'pianobar'"},
-        instance    = {
-            "pianobar"                              }
-    } ,
+        exec_once   = {pianobar_screen},
+        instance    = { "pianobar" },
+     } ,
 }
 
 -- Ignore the tag "exclusive" property for the following clients (matched by classes)
@@ -207,8 +213,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   }
                         })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+-- mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -217,6 +222,18 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
+
+batterywidget = wibox.widget.textbox()    
+batterywidget:set_text(" | Battery | ")    
+batterywidgettimer = timer({ timeout = 5 })    
+batterywidgettimer:connect_signal("timeout",    
+  function()    
+    fh = assert(io.popen("acpi | cut -d, -f 2,3 -", "r"))    
+    batterywidget:set_text(" |" .. fh:read("*l") .. " | ")    
+    fh:close()    
+  end    
+)    
+batterywidgettimer:start()
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -290,13 +307,14 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
+    -- left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(batterywidget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -382,24 +400,32 @@ globalkeys = awful.util.table.join(
     -- {{{ Custom
 
     -- Sleepy time
-    awful.key({ modkey }, "XF86Sleep", function () awful.util.spawn( "/usr/bin/xscreensaver-command -display :0.0 -activate" ) end),
+    awful.key({ }, "XF86ScreenSaver", function () awful.util.spawn( "systemctl suspend" ) end),
+
+    -- Lock
+    awful.key({ }, "XF86WebCam", function () awful.util.spawn( "slock" ) end),
+    awful.key({ }, "XF86Sleep", function () awful.util.spawn( "systemctl suspend && slock" ) end),
+
+    -- Brightness
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn( "xbacklight -inc 5" ) end),
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn( "xbacklight -dec 5" ) end),
     
     -- volume
-    awful.key({ modkey }, "XF86AudioRaiseVolume",
+    awful.key({ }, "XF86AudioRaiseVolume",
         function() awful.util.spawn("amixer set Master 2dB+", false) end),
-    awful.key({ modkey }, "XF86AudioLowerVolume",
+    awful.key({ }, "XF86AudioLowerVolume",
         function() awful.util.spawn("amixer set Master 2dB-", false) end),
-    awful.key({ modkey }, "XF86AudioMute",
+    awful.key({ }, "XF86AudioMute",
         function() awful.util.spawn("amixer set Master 0dB", false) end),
 
     -- {{{ Pianobar
-    awful.key({ modkey }, "XF86AudioPrev",
+    awful.key({ }, "XF86AudioPrev",
         function() awful.util.spawn(pianobar_history, false) end),
-    awful.key({ modkey }, "XF86AudioNext",
+    awful.key({ }, "XF86AudioNext",
         function() awful.util.spawn(pianobar_next, false) end),
-    awful.key({ modkey, "Shift" }, "XF86AudioPlay",
+    awful.key({ "Shift" }, "XF86AudioPlay",
         function() awful.util.spawn(pianobar_quit, false) end),
-    awful.key({ modkey }, "XF86AudioPlay",
+    awful.key({ }, "XF86AudioPlay",
         function()
         local f = io.popen("pgrep pianobar")
         p = f:read("*line")
