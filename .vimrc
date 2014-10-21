@@ -64,6 +64,8 @@ set number
 set wh=50
 set wiw=110
 
+set noswapfile
+
 let mapleader=','
 nmap <Leader>a> :Tab /=><CR>
 vmap <Leader>a> :Tab /=><CR>
