@@ -17,13 +17,21 @@ fi
 
 # Put your fun stuff here.
 
+uname -a | grep -oi arch >/dev/null
+ISARCH=$?
+
 export PATH=$HOME/.gem/ruby/1.9.1/bin:$HOME/.gem/ruby/2.0.0/bin:$PATH
 
 alias s='ssh -l root'
 alias v='vagrant'
 alias dev='cd ~/dev/'
+alias ls='/usr/bin/ls --color=auto'
 alias ll='ls -l'
 alias la='ls -la'
+
+if [ $ISARCH -eq 0 ]; then
+  alias p='sudo packer-color'
+fi
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

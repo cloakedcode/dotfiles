@@ -58,7 +58,7 @@ pianobar_upcoming = pianobar_cmd .. "upcoming"
 pianobar_station = pianobar_cmd .. "station"
 pianobar_playing = pianobar_cmd .. "playing"
 pianobar_quit = pianobar_cmd .. "quit && screen -S pianobar -X quit"
-pianobar_screen = "screen -Sdm pianobar && screen -S pianobar -X screen " .. pianobar_toggle
+pianobar_screen = "urxvt -name pianobar -e " .. pianobar_toggle
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -112,7 +112,7 @@ tyrannical.tags = {
         exclusive   = false,
         screen      = 2,
         layout      = awful.layout.suit.floating,
-        exec_once   = {"p4v"},
+        exec_once   = {},
         class       = { 
             "p4v.bin" , "P4v.bin" , "Gvim"
         }
@@ -149,6 +149,25 @@ tyrannical.tags = {
         class       = {
             "Pidgin"          , "Skype"                              }
     } ,
+    {
+        name        = "Web",
+        init        = true,
+        exclusive   = true,
+      --icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
+        screen      = screen.count()>1 and 2 or 1,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
+        layout      = awful.layout.suit.max,      -- Use the max layout
+        exec_once   = {"firefox"},
+        class = {
+            "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"        , "Arora",
+            "Chromium"      , "nightly"        , "minefield" , "Chrome"    }
+    } ,
+    {
+        name        = "Scratch",
+        init        = true,
+        exclusive   = false,
+        screen      = 1,
+        layout      = awful.layout.suit.floating,
+     } ,
     {
         name        = "Music",
         init        = true,
@@ -212,8 +231,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   }
                         })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+-- mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -222,6 +240,18 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
+
+batterywidget = wibox.widget.textbox()    
+batterywidget:set_text(" | Battery | ")    
+batterywidgettimer = timer({ timeout = 5 })    
+batterywidgettimer:connect_signal("timeout",    
+  function()    
+    fh = assert(io.popen("acpi | cut -d, -f 2,3 -", "r"))    
+    batterywidget:set_text(" |" .. fh:read("*l") .. " | ")    
+    fh:close()    
+  end    
+)    
+batterywidgettimer:start()
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -295,13 +325,14 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
+    -- left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(batterywidget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -387,7 +418,15 @@ globalkeys = awful.util.table.join(
     -- {{{ Custom
 
     -- Sleepy time
-    awful.key({ }, "XF86Sleep", function () awful.util.spawn( "slock" ) end),
+    awful.key({ }, "XF86ScreenSaver", function () awful.util.spawn( "systemctl suspend" ) end),
+
+    -- Lock
+    awful.key({ }, "XF86WebCam", function () awful.util.spawn( "slock" ) end),
+    awful.key({ }, "XF86Sleep", function () awful.util.spawn( "systemctl suspend && slock" ) end),
+
+    -- Brightness
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn( "xbacklight -inc 5" ) end),
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn( "xbacklight -dec 5" ) end),
     
     -- volume
     awful.key({ }, "XF86AudioRaiseVolume",
