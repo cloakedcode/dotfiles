@@ -43,7 +43,7 @@ end
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
+terminal = "xfce4-terminal"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -99,36 +99,34 @@ tyrannical.tags = {
         name        = "Term",                 -- Call the tag "Term"
         init        = true,                   -- Load the tag on startup
         exclusive   = true,                   -- Refuse any other type of clients (by classes)
-        screen      = {1,2},                  -- Create this tag on screen 1 and screen 2
+        screen      = {1,2,3},                  -- Create this tag on screen 1 and screen 2
         layout      = awful.layout.suit.fair, -- Use the tile layout
         instance    = {"dev", "ops"},         -- Accept the following instances. This takes precedence over 'class'
         class       = { --Accept the following classes, refuse everything else (because of "exclusive=true")
-            "xterm" , "urxvt" , "aterm","URxvt","XTerm","konsole","terminator","gnome-terminal"
+            "xterm" , "urxvt" , "aterm","URxvt","XTerm","konsole","terminator","gnome-terminal","xfce4-terminal"
         }
     } ,
     {
         name = "Develop",
         init        = true,
-        exclusive   = true,
-        screen      = 1,
-        clone_on    = 2, -- Create a single instance of this tag on screen 1, but also show it on screen 2
-                         -- The tag can be used on both screen, but only one at once
+        exclusive   = false,
+        screen      = 2,
         layout      = awful.layout.suit.floating,
         exec_once   = {"p4v"},
         class       = { 
-            "p4v.bin"
+            "p4v.bin" , "P4v.bin" , "Gvim"
         }
     } ,
     {
         name        = "Web",
         init        = true,
         exclusive   = true,
-      --icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
-        screen      = 2,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
+        screen      = 3,-- Setup on screen 2 if there is more than 1 screen, else on screen 1
         layout      = awful.layout.suit.max,      -- Use the max layout
+        exec_once   = {"/bin/bash -c 'ps -ef' | grep google/chrome > /dev/null || google-chrome-stable"},
         class = {
             "Opera"         , "Firefox"        , "Rekonq"    , "Dillo"        , "Arora",
-            "Chromium"      , "nightly"        , "minefield" , "Chrome"    }
+            "Chromium"      , "nightly"        , "minefield" , "Chrome" , "Google-chrome-stable"   }
     } ,
     {
         name        = "Doc",
@@ -155,11 +153,18 @@ tyrannical.tags = {
         name        = "Music",
         init        = true,
         exclusive   = true,
-        screen      = 1,
+        screen      = 3,
         layout      = awful.layout.suit.max,
         exec_once   = {"urxvt -name pianobar -e 'pianobar'"},
         instance    = {
             "pianobar"                              }
+    } ,
+    {
+        name        = "Scratch",
+        init        = true,
+        exclusive   = false,
+        screen      = {1,2,3},
+        layout      = awful.layout.suit.floating,
     } ,
 }
 
@@ -382,24 +387,24 @@ globalkeys = awful.util.table.join(
     -- {{{ Custom
 
     -- Sleepy time
-    awful.key({ modkey }, "XF86Sleep", function () awful.util.spawn( "/usr/bin/xscreensaver-command -display :0.0 -activate" ) end),
+    awful.key({ }, "XF86Sleep", function () awful.util.spawn( "slock" ) end),
     
     -- volume
-    awful.key({ modkey }, "XF86AudioRaiseVolume",
+    awful.key({ }, "XF86AudioRaiseVolume",
         function() awful.util.spawn("amixer set Master 2dB+", false) end),
-    awful.key({ modkey }, "XF86AudioLowerVolume",
+    awful.key({ }, "XF86AudioLowerVolume",
         function() awful.util.spawn("amixer set Master 2dB-", false) end),
-    awful.key({ modkey }, "XF86AudioMute",
+    awful.key({ }, "XF86AudioMute",
         function() awful.util.spawn("amixer set Master 0dB", false) end),
 
     -- {{{ Pianobar
-    awful.key({ modkey }, "XF86AudioPrev",
+    awful.key({ }, "XF86AudioPrev",
         function() awful.util.spawn(pianobar_history, false) end),
-    awful.key({ modkey }, "XF86AudioNext",
+    awful.key({ }, "XF86AudioNext",
         function() awful.util.spawn(pianobar_next, false) end),
-    awful.key({ modkey, "Shift" }, "XF86AudioPlay",
+    awful.key({ "Shift" }, "XF86AudioPlay",
         function() awful.util.spawn(pianobar_quit, false) end),
-    awful.key({ modkey }, "XF86AudioPlay",
+    awful.key({ }, "XF86AudioPlay",
         function()
         local f = io.popen("pgrep pianobar")
         p = f:read("*line")
