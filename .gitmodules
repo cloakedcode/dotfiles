@@ -1,12 +1,12 @@
-[submodule ".config/awesome/tyrannical"]
-	path = .config/awesome/tyrannical
+[submodule "config/awesome/tyrannical"]
+	path = config/awesome/tyrannical
 	url = https://github.com/Elv13/tyrannical.git
-[submodule ".config/awesome/awesome-freedesktop"]
-	path = .config/awesome/awesome-freedesktop
+[submodule "config/awesome/awesome-freedesktop"]
+	path = config/awesome/awesome-freedesktop
 	url = https://github.com/terceiro/awesome-freedesktop.git
-[submodule ".config/awesome/vicious"]
-	path = .config/awesome/vicious
+[submodule "config/awesome/vicious"]
+	path = config/awesome/vicious
 	url = http://git.sysphere.org/vicious
-[submodule ".vim/bundle/neobundle.vim"]
-	path = .vim/bundle/neobundle.vim
+[submodule "vim/bundle/neobundle.vim"]
+	path = vim/bundle/neobundle.vim
 	url = https://github.com/Shougo/neobundle.vim
