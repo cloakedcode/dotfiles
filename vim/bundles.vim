@@ -22,6 +22,8 @@ NeoBundle 'tpope/vim-sensible'
 NeoBundle 'bling/vim-airline'
 
 NeoBundle 'rodjek/vim-puppet'
+NeoBundle 'vim-scripts/JSON.vim'
+NeoBundle 'plasticboy/vim-markdown'
 
 NeoBundle 'godlygeek/tabular'
 
@@ -31,6 +33,8 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'MarcWeber/vim-addon-mw-utils'
 NeoBundle 'tomtom/tlib_vim'
+
+NeoBundle 'kien/ctrlp.vim'
 
 call neobundle#end()
 
