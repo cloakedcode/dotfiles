@@ -25,7 +25,7 @@ export PATH=$HOME/.gem/ruby/1.9.1/bin:$HOME/.gem/ruby/2.0.0/bin:$PATH
 alias s='ssh -l root'
 alias v='vagrant'
 alias dev='cd ~/dev/'
-alias ls='/usr/bin/ls --color=auto'
+alias ls='ls --color=auto'
 alias ll='ls -l'
 alias la='ls -la'
 
