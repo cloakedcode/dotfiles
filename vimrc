@@ -10,7 +10,7 @@ let g:email='a.smith@s2games.com'
 let g:syntastic_always_populate_loc_list = 1
 
 syntax on
-colorscheme slate
+colorscheme solarized
 set background=dark
 
 set autoindent
