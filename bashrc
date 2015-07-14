@@ -26,7 +26,7 @@ alias ls='ls --color=auto'
 alias ll='ls -l'
 alias la='ls -la'
 
-which keychain
+which keychain > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     keychain ~/.ssh/id_rsa 2>/dev/null
     . ~/.keychain/$HOSTNAME-sh
