@@ -1,0 +1,13 @@
+#
+# wm independent hotkeys
+#
+
+super + Return
+    xfce4-terminal
+
+super + space
+    dmenu_run
+
+# make sxhkd reload its configuration files:
+super + Escape
+    pkill -USR1 -x sxhkd
