@@ -13,10 +13,14 @@ function usage {
     exit 1
 }
 
+function msg {
+    echo $(echo $1 | sed -e s@$HOME@~@g)
+}
+
 function do_backup {
     DEST=$1
     if [ $DO_BACKUP -eq 1 ] && [ -e "${DEST}" ]; then
-        echo "Backing up ${DEST} to ${DEST}.bkup"
+        msg "Backing up ${DEST} to ${DEST}.bkup"
         cp -r "${DEST}" "${DEST}.bkup"
     fi
 }
@@ -27,14 +31,14 @@ function link_file {
     NEW_FILE="${BASE}/${DOTFILE}"
 
     if [[ `readlink "${DEST}"` == "${NEW_FILE}" ]]; then
-        echo "${DEST} already points to ${NEW_FILE}, skipping..."
+        msg "${DEST} already points to ${NEW_FILE}, skipping..."
         return
     fi
     
     do_backup $DEST
 
     ln -sf "${NEW_FILE}" "${DEST}"
-    echo "Linked ${NEW_FILE} to ${DEST}"
+    msg "Linked ${NEW_FILE} to ${DEST}"
 }
 
 function link_config_dir {
@@ -43,15 +47,19 @@ function link_config_dir {
         DEST="${HOME}/.config/${D}"
         NEW_DIR="${BASE}/config/${D}"
 
+        if [[ "$D" == "config" ]]; then
+            continue
+        fi
+
         if [[ `readlink "${DEST}"` == "${NEW_DIR}" ]]; then
-            echo "${DEST} already points to ${NEW_DIR}, skipping..."
-            return
+            msg "${DEST} already points to ${NEW_DIR}, skipping..."
+            continue
         fi
 
         do_backup $DEST
 
         ln -sf "${NEW_DIR}" "${DEST}"
-        echo "Linked ${NEW_DIR} to ${DEST}"
+        msg "Linked ${NEW_DIR} to ${DEST}"
     done
 }
 
@@ -99,7 +107,7 @@ for F in $(echo "${FILES[@]}" | awk '{ print $1 }'); do
     fi
 
     if [ ! -e "${F}" ]; then
-        echo "${F} doesn't exist, skipping..."
+        msg "${F} doesn't exist, skipping..."
         continue
     fi
 
