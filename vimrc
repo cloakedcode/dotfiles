@@ -5,12 +5,12 @@ endif
 " Snippets variables
 let g:snips_author='Alan Smith'
 let g:author='Alan Smith'
-let g:snips_email='a.smith@s2games.com'
-let g:email='a.smith@s2games.com'
+let g:snips_email='alan@airpost.net'
+let g:email='alan@airpost.net'
 let g:syntastic_always_populate_loc_list = 1
 
 syntax on
-colorscheme solarized
+" colorscheme solarized
 set background=dark
 
 set autoindent
