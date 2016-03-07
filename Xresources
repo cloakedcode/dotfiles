@@ -36,49 +36,77 @@
 #define S_cyan          #2aa198
 #define S_green         #859900
 
-URxvt.background:            S_base03
-URxvt.foreground:            S_base00
+#include "/home/smith/.Xresources.colors"
+
+URxvt.background:            #181818
+URxvt.foreground:            #839496
 URxvt.fading:                40
-URxvt.fadeColor:             S_base03
-URxvt.cursorColor:           S_base1
-URxvt.pointerColorBackground:S_base01
-URxvt.pointerColorForeground:S_base1
+!!URxvt.fadeColor:             S_base03
+!!URxvt.cursorColor:           S_base1
+!!URxvt.pointerColorBackground:S_base01
+!!URxvt.pointerColorForeground:S_base1
 
 !! black dark/light
-URxvt.color0:                S_base02
-URxvt.color8:                S_base03
+URxvt.color0:                COLOR1
+URxvt.color8:                COLOR9
 
 !! red dark/light
-URxvt.color1:                S_red
-URxvt.color9:                S_orange
+URxvt.color1:                COLOR2
+URxvt.color9:                COLOR10
 
 !! green dark/light
-URxvt.color2:                S_green
-URxvt.color10:               S_base01
+URxvt.color2:                COLOR3
+URxvt.color10:               COLOR11
 
 !! yellow dark/light
-URxvt.color3:                S_yellow
-URxvt.color11:               S_base00
+URxvt.color3:                COLOR4
+URxvt.color11:               COLOR12
 
 !! blue dark/light
-URxvt.color4:                S_blue
-URxvt.color12:               S_base0
+URxvt.color4:                COLOR5
+URxvt.color12:               COLOR13
 
 !! magenta dark/light
-URxvt.color5:                S_magenta
-URxvt.color13:               S_violet
+URxvt.color5:                COLOR6
+URxvt.color13:               COLOR14
 
 !! cyan dark/light
-URxvt.color6:                S_cyan
-URxvt.color14:               S_base1
+URxvt.color6:                COLOR7
+URxvt.color14:               COLOR15
 
 !! white dark/light
-URxvt.color7:                S_base2
-URxvt.color15:               S_base3
+URxvt.color7:                COLOR8
+URxvt.color15:               COLOR0
 
 URxvt.scrollBar: false
-URxvt.font: xft:inconsolata:size=12
+URxvt.font: xft:inconsolata for powerline regular:size=11:antialias=false
 !!URxvt.perl-ext-common: default,matcher
 !!URxvt.url-launcher: /usr/bin/firefox
 !!URxvt.matcher.button: 1
 
+URxvt.perl-ext-common: default,clipboard
+URxvt.keysym.Shift-Control-C: perl:clipboard:copy
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.clipboard.copycmd:  xsel -ib
+URxvt.clipboard.pastecmd: xsel -ob
+
+rofi.background: #2a303b
+rofi.foreground: #eee8d5
+rofi.highlightbg: #477bbc
+rofi.highlightfg: #ffffff
+rofi.bordercolor: #477bbc
+rofi.padding: 1
+rofi.lines: 10
+rofi.borderwidth: 1
+rofi.opacity: 100
+rofi.font: Inconsolata 10
+rofi.location: 7
+rofi.yoffset: 0
+rofi.xoffset: 0
+rofi.width: 100
+rofi.fixed_num_lines: 1
+rofi.hmode: false
+rofi.terminal: xfce4-terminal --window
+rofi.ssh-command: {terminal} -e '{ssh-client} {host}'
+rofi.run-shell-command: {terminal} -e '{cmd}'
+rofi.ssh-set-title: false

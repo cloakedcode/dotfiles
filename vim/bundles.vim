@@ -24,6 +24,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'rodjek/vim-puppet'
 NeoBundle 'vim-scripts/JSON.vim'
 NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'PotatoesMaster/i3-vim-syntax'
 
 NeoBundle 'godlygeek/tabular'
 

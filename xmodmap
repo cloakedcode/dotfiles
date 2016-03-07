@@ -20,8 +20,8 @@ clear mod4
 
 !keycode  66 = Alt_L Meta_L
 keycode  66 = Super_L
-keycode 133 = Alt_L Meta_L
-keycode  64 = Control_L
+!keycode 133 = Alt_L Meta_L
+!keycode  64 = Control_L
 keycode 108 = Control_R
 keycode 134 = Alt_R Meta_R
 keycode 135 = Alt_R Meta_R

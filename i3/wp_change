@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+function shuffle {
+    echo $* | tr " " "\n" | shuf | tr -d " "
+}
+
+WP_DIR="$(dirname $(realpath $0))/wp"
+WP=$WP_DIR/wp
+
+OPTS=$(shuffle `$WP list`)
+
+$WP change ${OPTS[0]}
+
+XFCE_TERM=$(which xfce4-terminal)
+if [ $? -eq 0 ]; then
+    $WP_DIR/misc/xfce4-term
+fi

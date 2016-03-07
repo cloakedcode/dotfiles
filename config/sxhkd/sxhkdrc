@@ -2,12 +2,30 @@
 # wm independent hotkeys
 #
 
-super + Return
-    xfce4-terminal
+super + shift + Return
+    urxvt
 
-super + space
-    dmenu_run
+super + alt + f
+    firefox-bin
+
+#super + space
+    #dmenu_run
+
+#super + shift + Escape
+    #killall X
+
+super + shift + l
+    /home/smith/bin/locker
 
 # make sxhkd reload its configuration files:
 super + Escape
     pkill -USR1 -x sxhkd
+#
+# Media keys
+#
+#XF86AudioRaiseVolume
+    #$HOME/.config/bspwm/panel/notify_volume + 3
+#XF86AudioLowerVolume
+    #$HOME/.config/bspwm/panel/notify_volume - 3
+#XF86AudioMute
+    #$HOME/.config/bspwm/panel/notify_volume !

@@ -191,6 +191,11 @@ pcm.movie {
     }
 }
 
+pcm.!hdmi {
+    type hw
+    card 0
+    device 3
+}
 
 # http://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/PerfectSetup/
 pcm.pulse {
