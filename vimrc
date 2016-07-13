@@ -10,7 +10,6 @@ let g:email='alan@airpost.net'
 let g:syntastic_always_populate_loc_list = 1
 
 syntax on
-"colorscheme slate
 set background=dark
 "colorscheme solarized
 "set background=light
@@ -45,7 +44,7 @@ autocmd BufNewFile,BufRead Gemfile set filetype=ruby
 autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
 autocmd BufNewFile,BufRead Berksfile set filetype=ruby
 autocmd BufNewFile,BufRead *.verb set filetype=ruby
+autocmd BufRead,BufNewFile /tmp/item* set filetype=verdad_apple
 
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
-
 autocmd FileType markdown setlocal spell spelllang=en_us
