@@ -1,12 +1,9 @@
-[submodule "config/awesome/tyrannical"]
-	path = config/awesome/tyrannical
-	url = https://github.com/Elv13/tyrannical.git
-[submodule "config/awesome/awesome-freedesktop"]
-	path = config/awesome/awesome-freedesktop
-	url = https://github.com/terceiro/awesome-freedesktop.git
-[submodule "config/awesome/vicious"]
-	path = config/awesome/vicious
-	url = http://git.sysphere.org/vicious
-[submodule "vim/bundle/neobundle.vim"]
-	path = vim/bundle/neobundle.vim
+[submodule "dotfiles/vim/bundle/neobundle.vim"]
+	path = dotfiles/vim/bundle/neobundle.vim
 	url = https://github.com/Shougo/neobundle.vim
+[submodule "powerline-shell"]
+	path = powerline-shell
+	url = https://github.com/milkbikis/powerline-shell
+[submodule "oh-my-zsh"]
+	path = oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git

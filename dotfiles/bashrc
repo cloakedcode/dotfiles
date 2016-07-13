@@ -1,0 +1,17 @@
+if [[ $- != *i* ]] ; then
+	# Shell is non-interactive.  Be done now!
+	return
+fi
+
+# Put your fun stuff here.
+
+export PATH=$HOME/bin:$HOME/.gem/ruby/2.2.0/bin:$PATH
+export EDITOR=vim
+
+function _update_ps1() {
+    PS1="$(~/code/dotfiles/powerline-shell/powerline-shell.py $? 2> /dev/null)"
+}
+
+if [ "$TERM" != "linux" ]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
