@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/smith/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -53,28 +53,11 @@ plugins=(git)
 
 # User configuration
 
-  export PATH="/home/smith/bin:/home/smith/.gem/ruby/2.2.0/bin:/home/smith/bin:/home/smith/.gem/ruby/2.2.0/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.9.2"
-# export MANPATH="/usr/local/man:$MANPATH"
-
 source $ZSH/oh-my-zsh.sh
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-export EDITOR='vim'
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
+#------------------------------
+# powerline-status
+#------------------------------
 function powerline_precmd() {
     PS1="$(~/code/powerline-shell/powerline-shell.py $? --shell zsh 2> /dev/null)"
 }
@@ -88,22 +71,33 @@ function install_powerline_precmd() {
     precmd_functions+=(powerline_precmd)
 }
 
-if [ "$TERM" != "linux" ]; then
+if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]] || [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+    PYTHONPKGS=/Library/Python/2.7/site-packages
+    if [[ -f $PYTHONPKGS/powerline/bindings/zsh/powerline.zsh ]]; then
+        . $PYTHONPKGS/powerline/bindings/zsh/powerline.zsh
+    fi
+elif [ "$TERM" != "linux" ]; then
     install_powerline_precmd
 fi
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vi="vim"
+#------------------------------
+
+# turn on vi mode
+set -o vi
+
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
+export LANG=en_US.UTF-8
+
+export EDITOR='vim'
 alias e="$EDITOR"
+alias vi="vim"
 
 alias v="vagrant"
+
+if [[ -f "${HOME}/bin/ssh_to_site.sh" ]]; then
+    source "${HOME}/bin/ssh_to_site.sh"
+    alias ss="ssh_to_site"
+fi
 
 which keychain > /dev/null 2>&1
 if [ $? -eq 0 ]; then
@@ -111,3 +105,7 @@ if [ $? -eq 0 ]; then
     . ~/.keychain/`hostname`-sh
     #. ~/.keychain/`hostname`-sh-gpg
 fi
+
+function pushtest {
+    curbranch=$(git rev-parse --abbrev-ref HEAD) ; git checkout test && git reset --hard $curbranch && git push --force origin && git checkout $curbranch
+}

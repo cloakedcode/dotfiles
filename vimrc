@@ -10,7 +10,7 @@ let g:email='alan@airpost.net'
 let g:syntastic_always_populate_loc_list = 1
 
 syntax on
-colorscheme slate
+"colorscheme slate
 set background=dark
 "colorscheme solarized
 "set background=light
@@ -44,6 +44,7 @@ vmap <Leader>a= :Tab /=<CR>
 autocmd BufNewFile,BufRead Gemfile set filetype=ruby
 autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
 autocmd BufNewFile,BufRead Berksfile set filetype=ruby
+autocmd BufNewFile,BufRead *.verb set filetype=ruby
 
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 
